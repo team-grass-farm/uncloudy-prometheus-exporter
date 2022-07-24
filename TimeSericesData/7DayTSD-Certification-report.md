@@ -5,7 +5,7 @@ author: 박종범<jnubugo@gmail.com>
 version: 1
 ---
 
-# 7DayTSD-Certification-report.
+# 7DayTSD-Certification-report
 
 
 ## 개요
@@ -13,7 +13,7 @@ Uncloud graph의 Prometheus-Exporter의 시계열 데이터에 대한 시간연�
 
 ### 절차
 - 24Hour별 데이터 일관성 확인
-- 7Day별 데이터 일관성 확인
+- 신규 이슈에 대한 체크
 
 ### 수집 시작 시간
 - 2022:07:17 08:34:28
@@ -38,7 +38,11 @@ Uncloud graph의 Prometheus-Exporter의 시계열 데이터에 대한 시간연�
 1시간 단위 일관성 있는 데이터 제공 -> 백엔드 서버의 메트릭 생성으로 신규값 제공
 
 ### 신규 이슈 - TSDB 용량 문제
+<img width="389" alt="스크린샷 2022-07-24 오후 2 29 39" src="https://user-images.githubusercontent.com/49029142/180633748-43597bfc-402e-4f09-ab70-b002ae6f5bd9.png">
 
 현재 인스턴스에 할당된 스토리지: 20GB
+<img width="1455" alt="스크린샷 2022-07-24 오후 2 23 46" src="https://user-images.githubusercontent.com/49029142/180633751-53d600ff-4ac0-43f2-8d61-beacbdb2a2b7.png">
+
 사용량: 2022-07-23 14:30:00 (17.97%) ~ 2022-07-24 14:30:00 (17.99%)
+
 => 1년이상 사용가능, 추후 NAS를 활용한 증설가능
