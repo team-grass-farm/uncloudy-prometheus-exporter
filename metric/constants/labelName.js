@@ -1,4 +1,4 @@
-const POD_LABEL_NAMES = ['pod', 'namespace', 'instance'];
+const POD_LABEL_NAMES = ['pod', 'namespace', 'instance', 'deployment'];
 const NODE_LABEL_NAMES = ['container', 'cluster', 'instance'];
 
 module.exports = {
