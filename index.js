@@ -1,5 +1,8 @@
 const client = require('prom-client');
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+
+const spec = require('./swagger/swagger.json');
 
 const { customPodCpuUsage } = require('./metric/pod/customPodCpuUsage');
 const { customPodMemoryUsage } = require('./metric/pod/customPodMemoryUsage');
@@ -45,6 +48,8 @@ customNodeDiskLatency(register);
 customNodeMemoryUsage(register);
 customNodeMemoryUsageBytes(register);
 customNodeTotalMemory(register);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 app.get('/metrics', async (req, res) => {
   res.setHeader('Content-Type', register.contentType);
