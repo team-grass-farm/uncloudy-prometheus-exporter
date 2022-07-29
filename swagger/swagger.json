@@ -1,0 +1,219 @@
+{
+  "swagger": "2.0.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "prometheus-metrics",
+    "description": "uncloudy-grapher를 위한 prometheus-metrics 입니다.",
+    "license": {
+      "name": "MIT",
+      "url": "http://localhost:9090/api/v1"
+    }
+  },
+  "host": "localhost:9090/api/v1",
+  "schemes": ["http"],
+  "paths": {
+    "/query?query={query}&time={time}": {
+      "get": {
+        "tags": ["prometheus-metric"],
+        "summary": "resultType: vector",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string",
+            "example": "custom_node_cpu_total"
+          },
+          {
+            "name": "time",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "dateTime",
+            "example": 1659083667.513
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#definitions/vector"
+            }
+          }
+        }
+      }
+    },
+    "/query?query={query}{timeRange}&time={time}": {
+      "get": {
+        "tags": ["prometheus-metric"],
+        "summary": "resultType: vector",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "custom_node_cpu_total"
+          },
+          {
+            "name": "timeRange",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "[1m]"
+          },
+          {
+            "name": "time",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": 1659083667.513
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#definitions/matrix"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "vector": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "vector"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "custom_node_cpu_total"
+                      },
+                      "cluster": {
+                        "type": "string",
+                        "example": "busan"
+                      },
+                      "container": {
+                        "type": "string",
+                        "example": "nodejs"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "array",
+                    "example": [1659074738.418, "0.2925363504199614"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "matrix": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "matrix"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "custom_node_cpu_total"
+                      },
+                      "cluster": {
+                        "type": "string",
+                        "example": "busan"
+                      },
+                      "container": {
+                        "type": "string",
+                        "example": "nodejs"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      }
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "example": [
+                      [1659083667.513, "0.9572312074314"],
+                      [1659083712.513, "0.2589979277102208"]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": {
+      "properties": {
+        "0": {
+          "type": "float",
+          "description": "metric 수집 시각"
+        },
+        "1": {
+          "type": "string",
+          "description": "metric value"
+        }
+      }
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "0": {
+            "type": "float",
+            "description": "metric 수집 시각"
+          },
+          "1": {
+            "type": "string",
+            "description": "metric value"
+          }
+        }
+      }
+    }
+  }
+}
