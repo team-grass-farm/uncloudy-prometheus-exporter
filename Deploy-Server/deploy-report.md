@@ -24,15 +24,25 @@ Uncloud graph의 Prometheus-Exporter 배포 서버 구현
 <img width="946" alt="스크린샷 2022-07-23 오후 10 05 09" src="https://user-images.githubusercontent.com/49029142/180606840-526638f3-3a43-47f3-aeb3-3633d0c41f53.png">
 
 
-현재 크레딧이 남은 국내 클라우드(NHN_Toast)선택
+- 현재 크레딧이 남은 국내 클라우드(NHN_Toast)선택
+
+### 예상 요금 산출
 
 <img width="1207" alt="스크린샷 2022-07-23 오후 10 03 23" src="https://user-images.githubusercontent.com/49029142/180607867-0ea32110-12a1-4692-b6ca-d049c3d155c3.png">
 
+![예상요금 (일반)](https://user-images.githubusercontent.com/49029142/182008110-52e9d9e4-b844-4c21-9cc5-1c7e94e8c674.PNG)
+
+일반용도 인스턴스 예상비용
 
 <img width="1132" alt="스크린샷 2022-07-23 오후 10 04 39" src="https://user-images.githubusercontent.com/49029142/180606872-bd0fb50f-c915-4944-b0e0-8d72bc882b7b.png">
 
+현재 사용예정 인스턴스
 
-한달 기준으로의 예상 요금 계산(24h * 30day)
+![예상요금_vpc+ip](https://user-images.githubusercontent.com/49029142/182008193-3b1f4a11-9c5c-499c-a76f-7879a61a3364.PNG)
+
+네트워크 사용 예상 비용
+
+- 한달 기준으로의 예상 요금 계산(24h * 30day) : 9576원/월
 
 ### 클라우드 환경 구현
 
