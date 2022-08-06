@@ -6,13 +6,9 @@ const { customPodMemoryUsage } = require('./metric/pod/customPodMemoryUsage');
 const {
   customPodMemoryUsageBytes,
 } = require('./metric/pod/customPodMemoryUsageBytes');
-const { customPodTotalMemory } = require('./metric/pod/customPodTotalMemory');
 
-const { customNodeCpuTotal } = require('./metric/node/customNodeCpuTotal');
 const { customNodeCpuUsage } = require('./metric/node/customNodeCpuUsage');
-const {
-  customNodeTotalMemory,
-} = require('./metric/node/customNodeTotalMemory');
+
 const { customPodDiskLatency } = require('./metric/pod/customPodDiskLatency');
 const {
   customNodeDiskLatency,
@@ -37,22 +33,19 @@ const register = new client.Registry();
 
 // pod metrics
 customPodCpuUsage(register);
-customPodMemoryUsage(register);
-customPodMemoryUsageBytes(register);
-customPodTotalMemory(register);
-customPodDiskLatency(register);
 customPodCpuSpec(register);
 customPodMemorySpec(register);
+customPodMemoryUsageBytes(register);
+customPodMemoryUsage(register);
+customPodDiskLatency(register);
 
 // node metrics
-customNodeCpuTotal(register);
 customNodeCpuUsage(register);
-customNodeDiskLatency(register);
-customNodeMemoryUsage(register);
-customNodeMemoryUsageBytes(register);
-customNodeTotalMemory(register);
 customNodeCpuSpec(register);
 customNodeMemorySpec(register);
+customNodeMemoryUsageBytes(register);
+customNodeMemoryUsage(register);
+customNodeDiskLatency(register);
 
 app.get('/metrics', async (req, res) => {
   res.setHeader('Content-Type', register.contentType);
