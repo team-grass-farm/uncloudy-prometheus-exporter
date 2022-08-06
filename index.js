@@ -23,6 +23,10 @@ const {
 const {
   customNodeMemoryUsageBytes,
 } = require('./metric/node/customNodeMemoryUsageBytes');
+const { customPodCpuSpec } = require('./metric/pod/customPodCpuSpec');
+const { customNodeCpuSpec } = require('./metric/node/customNodeCpuSpec');
+const { customPodMemorySpec } = require('./metric/pod/customPodMemorySpec');
+const { customNodeMemorySpec } = require('./metric/node/customNodeMemorySpec');
 
 const app = express();
 
@@ -37,6 +41,8 @@ customPodMemoryUsage(register);
 customPodMemoryUsageBytes(register);
 customPodTotalMemory(register);
 customPodDiskLatency(register);
+customPodCpuSpec(register);
+customPodMemorySpec(register);
 
 // node metrics
 customNodeCpuTotal(register);
@@ -45,6 +51,8 @@ customNodeDiskLatency(register);
 customNodeMemoryUsage(register);
 customNodeMemoryUsageBytes(register);
 customNodeTotalMemory(register);
+customNodeCpuSpec(register);
+customNodeMemorySpec(register);
 
 app.get('/metrics', async (req, res) => {
   res.setHeader('Content-Type', register.contentType);
