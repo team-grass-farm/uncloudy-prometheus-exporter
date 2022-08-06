@@ -6,76 +6,59 @@
     "description": "uncloudy-grapher를 위한 prometheus-metrics 입니다.",
     "license": {
       "name": "MIT",
-      "url": "http://localhost:9090/api/v1"
+      "url": "http://uncloudy.duckdns.org:9090/api/v1"
     }
   },
-  "host": "localhost:9090/api/v1",
+  "host": "uncloudy.duckdns.org:9090/api/v1",
   "schemes": ["http"],
   "paths": {
     "/query?query={query}&time={time}": {
       "get": {
         "tags": ["prometheus-metric"],
-        "summary": "resultType: vector",
+        "summary": "custom_node_cpu_usage",
         "parameters": [
           {
             "name": "query",
             "in": "path",
             "required": true,
             "type": "string",
-            "format": "string",
-            "example": "custom_node_cpu_total"
+            "default": "custom_node_cpu_usage[1m]",
+            "example": "custom_node_cpu_usage[1m]",
+            "description": "prom-ql"
           },
           {
             "name": "time",
             "in": "path",
             "required": true,
             "type": "string",
-            "format": "dateTime",
-            "example": 1659083667.513
+            "example": 1659782551.14,
+            "default": 1659782551.14,
+            "description": "기준 시각"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "200: node vector": {
+            "description": "node metric의 value가 1개일 경우",
             "schema": {
-              "$ref": "#definitions/vector"
+              "$ref": "#definitions/node_vector"
             }
-          }
-        }
-      }
-    },
-    "/query?query={query}{timeRange}&time={time}": {
-      "get": {
-        "tags": ["prometheus-metric"],
-        "summary": "resultType: vector",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "custom_node_cpu_total"
           },
-          {
-            "name": "timeRange",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "[1m]"
-          },
-          {
-            "name": "time",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": 1659083667.513
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+          "200: node metric": {
+            "description": "node metric의 value가 여러개일 경우",
             "schema": {
-              "$ref": "#definitions/matrix"
+              "$ref": "#definitions/node_matrix"
+            }
+          },
+          "200: pod vector": {
+            "description": "pod metric의 value가 1개일 경우",
+            "schema": {
+              "$ref": "#definitions/pod_vector"
+            }
+          },
+          "200: pod metric": {
+            "description": "pod metric의 value가 여러개일 경우",
+            "schema": {
+              "$ref": "#definitions/pod_matrix"
             }
           }
         }
@@ -83,7 +66,7 @@
     }
   },
   "definitions": {
-    "vector": {
+    "node_vector": {
       "properties": {
         "status": {
           "type": "integer",
@@ -103,7 +86,7 @@
                     "properties": {
                       "__name__": {
                         "type": "string",
-                        "example": "custom_node_cpu_total"
+                        "example": "query resource"
                       },
                       "cluster": {
                         "type": "string",
@@ -120,6 +103,10 @@
                       "job": {
                         "type": "string",
                         "example": "kube_state_demo"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
                       }
                     }
                   },
@@ -134,7 +121,7 @@
         }
       }
     },
-    "matrix": {
+    "node_matrix": {
       "properties": {
         "status": {
           "type": "integer",
@@ -154,7 +141,7 @@
                     "properties": {
                       "__name__": {
                         "type": "string",
-                        "example": "custom_node_cpu_total"
+                        "example": "query resource"
                       },
                       "cluster": {
                         "type": "string",
@@ -171,6 +158,131 @@
                       "job": {
                         "type": "string",
                         "example": "kube_state_demo"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "example": [
+                      [1659083667.513, "0.9572312074314"],
+                      [1659083712.513, "0.2589979277102208"]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pod_vector": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "vector"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "deployment": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "namespace": {
+                        "type": "string",
+                        "example": "infra"
+                      },
+                      "pod": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321-9sj2a"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "array",
+                    "example": [1659074738.418, "0.2925363504199614"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pod_matrix": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "matrix"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "deployment": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "namespace": {
+                        "type": "string",
+                        "example": "infra"
+                      },
+                      "pod": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321-9sj2a"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
                       }
                     }
                   },
