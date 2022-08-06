@@ -1,28 +1,22 @@
 const client = require('prom-client');
 const express = require('express');
 
-const { customPodCpuUsage } = require('./metric/pod/customPodCpuUsage');
-const { customPodMemoryUsage } = require('./metric/pod/customPodMemoryUsage');
 const {
-  customPodMemoryUsageBytes,
-} = require('./metric/pod/customPodMemoryUsageBytes');
-
-const { customNodeCpuUsage } = require('./metric/node/customNodeCpuUsage');
-
-const { customPodDiskLatency } = require('./metric/pod/customPodDiskLatency');
-const {
-  customNodeDiskLatency,
-} = require('./metric/node/customNodeDiskLatency');
-const {
-  customNodeMemoryUsage,
-} = require('./metric/node/customNodeMemoryUsage');
-const {
+  customNodeCpuUsage,
+  customNodeCpuSpec,
+  customNodeMemorySpec,
   customNodeMemoryUsageBytes,
-} = require('./metric/node/customNodeMemoryUsageBytes');
-const { customPodCpuSpec } = require('./metric/pod/customPodCpuSpec');
-const { customNodeCpuSpec } = require('./metric/node/customNodeCpuSpec');
-const { customPodMemorySpec } = require('./metric/pod/customPodMemorySpec');
-const { customNodeMemorySpec } = require('./metric/node/customNodeMemorySpec');
+  customNodeMemoryUsage,
+  customNodeDiskLatency,
+} = require('./metric/node/index.js');
+const {
+  customPodCpuUsage,
+  customPodCpuSpec,
+  customPodMemorySpec,
+  customPodMemoryUsageBytes,
+  customPodMemoryUsage,
+  customPodDiskLatency,
+} = require('./metric/pod/index.js');
 
 const app = express();
 
