@@ -4,28 +4,22 @@ const swaggerUi = require('swagger-ui-express');
 
 const spec = require('./swagger/swagger.json');
 
-const { customPodCpuUsage } = require('./metric/pod/customPodCpuUsage');
-const { customPodMemoryUsage } = require('./metric/pod/customPodMemoryUsage');
 const {
-  customPodMemoryUsageBytes,
-} = require('./metric/pod/customPodMemoryUsageBytes');
-const { customPodTotalMemory } = require('./metric/pod/customPodTotalMemory');
-
-const { customNodeCpuTotal } = require('./metric/node/customNodeCpuTotal');
-const { customNodeCpuUsage } = require('./metric/node/customNodeCpuUsage');
-const {
-  customNodeTotalMemory,
-} = require('./metric/node/customNodeTotalMemory');
-const { customPodDiskLatency } = require('./metric/pod/customPodDiskLatency');
-const {
-  customNodeDiskLatency,
-} = require('./metric/node/customNodeDiskLatency');
-const {
-  customNodeMemoryUsage,
-} = require('./metric/node/customNodeMemoryUsage');
-const {
+  customNodeCpuUsage,
+  customNodeCpuSpec,
+  customNodeMemorySpec,
   customNodeMemoryUsageBytes,
-} = require('./metric/node/customNodeMemoryUsageBytes');
+  customNodeMemoryUsage,
+  customNodeDiskLatency,
+} = require('./metric/node/index.js');
+const {
+  customPodCpuUsage,
+  customPodCpuSpec,
+  customPodMemorySpec,
+  customPodMemoryUsageBytes,
+  customPodMemoryUsage,
+  customPodDiskLatency,
+} = require('./metric/pod/index.js');
 
 const app = express();
 
@@ -36,18 +30,19 @@ const register = new client.Registry();
 
 // pod metrics
 customPodCpuUsage(register);
-customPodMemoryUsage(register);
+customPodCpuSpec(register);
+customPodMemorySpec(register);
 customPodMemoryUsageBytes(register);
-customPodTotalMemory(register);
+customPodMemoryUsage(register);
 customPodDiskLatency(register);
 
 // node metrics
-customNodeCpuTotal(register);
 customNodeCpuUsage(register);
-customNodeDiskLatency(register);
-customNodeMemoryUsage(register);
+customNodeCpuSpec(register);
+customNodeMemorySpec(register);
 customNodeMemoryUsageBytes(register);
-customNodeTotalMemory(register);
+customNodeMemoryUsage(register);
+customNodeDiskLatency(register);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
