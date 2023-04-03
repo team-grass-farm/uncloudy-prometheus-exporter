@@ -44,6 +44,7 @@ customNodeMemoryUsageBytes(register);
 customNodeMemoryUsage(register);
 customNodeDiskLatency(register);
 
+// swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 app.get('/metrics', async (req, res) => {
