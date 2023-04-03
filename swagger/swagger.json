@@ -1,0 +1,331 @@
+{
+  "swagger": "2.0.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "prometheus-metrics",
+    "description": "uncloudy-grapher를 위한 prometheus-metrics 입니다.",
+    "license": {
+      "name": "MIT",
+      "url": "http://uncloudy.duckdns.org:9090/api/v1"
+    }
+  },
+  "host": "uncloudy.duckdns.org:9090/api/v1",
+  "schemes": ["http"],
+  "paths": {
+    "/query?query={query}&time={time}": {
+      "get": {
+        "tags": ["prometheus-metric"],
+        "summary": "custom_node_cpu_usage",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "custom_node_cpu_usage[1m]",
+            "example": "custom_node_cpu_usage[1m]",
+            "description": "prom-ql"
+          },
+          {
+            "name": "time",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": 1659782551.14,
+            "default": 1659782551.14,
+            "description": "기준 시각"
+          }
+        ],
+        "responses": {
+          "200: node vector": {
+            "description": "node metric의 value가 1개일 경우",
+            "schema": {
+              "$ref": "#definitions/node_vector"
+            }
+          },
+          "200: node metric": {
+            "description": "node metric의 value가 여러개일 경우",
+            "schema": {
+              "$ref": "#definitions/node_matrix"
+            }
+          },
+          "200: pod vector": {
+            "description": "pod metric의 value가 1개일 경우",
+            "schema": {
+              "$ref": "#definitions/pod_vector"
+            }
+          },
+          "200: pod metric": {
+            "description": "pod metric의 value가 여러개일 경우",
+            "schema": {
+              "$ref": "#definitions/pod_matrix"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "node_vector": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "vector"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "cluster": {
+                        "type": "string",
+                        "example": "busan"
+                      },
+                      "container": {
+                        "type": "string",
+                        "example": "nodejs"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "array",
+                    "example": [1659074738.418, "0.2925363504199614"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "node_matrix": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "matrix"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "cluster": {
+                        "type": "string",
+                        "example": "busan"
+                      },
+                      "container": {
+                        "type": "string",
+                        "example": "nodejs"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "example": [
+                      [1659083667.513, "0.9572312074314"],
+                      [1659083712.513, "0.2589979277102208"]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pod_vector": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "vector"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "deployment": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "namespace": {
+                        "type": "string",
+                        "example": "infra"
+                      },
+                      "pod": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321-9sj2a"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "array",
+                    "example": [1659074738.418, "0.2925363504199614"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pod_matrix": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "success"
+        },
+        "data": {
+          "properties": {
+            "resultType": {
+              "type": "string",
+              "example": "matrix"
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "metric": {
+                    "properties": {
+                      "__name__": {
+                        "type": "string",
+                        "example": "query resource"
+                      },
+                      "deployment": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321"
+                      },
+                      "instance": {
+                        "type": "string",
+                        "example": "busanh02"
+                      },
+                      "job": {
+                        "type": "string",
+                        "example": "kube_state_demo"
+                      },
+                      "namespace": {
+                        "type": "string",
+                        "example": "infra"
+                      },
+                      "pod": {
+                        "type": "string",
+                        "example": "grafana-deployment-5738192321-9sj2a"
+                      },
+                      "os": {
+                        "type": "string",
+                        "example": "ubuntu"
+                      }
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "example": [
+                      [1659083667.513, "0.9572312074314"],
+                      [1659083712.513, "0.2589979277102208"]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": {
+      "properties": {
+        "0": {
+          "type": "float",
+          "description": "metric 수집 시각"
+        },
+        "1": {
+          "type": "string",
+          "description": "metric value"
+        }
+      }
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "0": {
+            "type": "float",
+            "description": "metric 수집 시각"
+          },
+          "1": {
+            "type": "string",
+            "description": "metric value"
+          }
+        }
+      }
+    }
+  }
+}

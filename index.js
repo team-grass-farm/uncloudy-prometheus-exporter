@@ -1,5 +1,8 @@
 const client = require('prom-client');
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+
+const spec = require('./swagger/swagger.json');
 
 const {
   customNodeCpuUsage,
@@ -40,6 +43,8 @@ customNodeMemorySpec(register);
 customNodeMemoryUsageBytes(register);
 customNodeMemoryUsage(register);
 customNodeDiskLatency(register);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 app.get('/metrics', async (req, res) => {
   res.setHeader('Content-Type', register.contentType);
